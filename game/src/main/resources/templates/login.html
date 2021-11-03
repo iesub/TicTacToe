@@ -1,0 +1,59 @@
+
+<html xmlns:th="http://www.thymeleaf.org" xmlns:sec="http://www.w3.org/1999/xhtml">
+<head>
+  <title>Авторизация</title>
+  <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+
+  <script src="https://code.jquery.com/jquery-3.6.0.js"
+          integrity="sha256-H+K7U5CnXl1h5ywQfKtSj8PCmoN9aaq30gDh27Xc0jk="
+          crossorigin="anonymous"></script>
+  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js" integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q" crossorigin="anonymous"></script>
+  <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js" integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl" crossorigin="anonymous"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/sockjs-client/1.1.4/sockjs.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/stomp.js/2.3.3/stomp.min.js"></script>
+  <link th:href="@{/css/preloader.css}" rel="stylesheet" />
+  <link th:href="@{/css/header.css}" rel="stylesheet" />
+  <script type="text/javascript" th:src="@{/js/preloader.js}"> </script>
+
+
+</head>
+<body>
+
+
+<div th:insert="~{index :: header}">
+</div>
+
+<div class = "container">
+  <div class = "row">
+    <h1>Авторизация</h1>
+  </div>
+  <div class = "row">
+    <td th:if="${Error}">Неверный адрес электронной почты или пароль</td>
+  </div>
+  <div class = "row">
+    <form th:action="@{/login}" method="post">
+      <div class = "row">
+        <div class = "col-sm">
+          <label>Адрес электронной почты: </label>
+        </div>
+        <div class = "col-sm">
+          <input type="text" id="username" name="username" autofocus="autofocus" />
+        </div>
+      </div>
+      <div class = "row">
+        <div class = "col-sm">
+          <label>Пароль:</label>
+        </div>
+        <div class = "col-sm">
+          <input type="password" id="password" name="password" />
+        </div>
+      </div>
+      <div class = "row">
+        <p><input type="submit" value="Авторизоваться" /> <input type="reset" value="Сбросить" /></p>
+      </div>
+    </form>
+  </div>
+</div>
+</body>
+</html>

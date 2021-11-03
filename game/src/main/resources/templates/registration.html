@@ -1,0 +1,75 @@
+
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+  <title>Регистрация</title>
+  <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+
+  <script src="https://code.jquery.com/jquery-3.6.0.js"
+          integrity="sha256-H+K7U5CnXl1h5ywQfKtSj8PCmoN9aaq30gDh27Xc0jk="
+          crossorigin="anonymous"></script>
+  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js" integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q" crossorigin="anonymous"></script>
+  <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js" integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl" crossorigin="anonymous"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/sockjs-client/1.1.4/sockjs.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/stomp.js/2.3.3/stomp.min.js"></script>
+  <link th:href="@{/css/preloader.css}" rel="stylesheet" />
+  <link th:href="@{/css/header.css}" rel="stylesheet" />
+  <script type="text/javascript" th:src="@{/js/preloader.js}"> </script>
+
+  <script type="text/javascript" th:src="@{/js/registration.js}"> </script>
+
+</head>
+<body>
+
+<div th:insert="~{index :: header}">
+</div>
+
+<div class = "container">
+  <div class = "row">
+    <h1>Регистрация</h1>
+  </div>
+  <div class = "row">
+    <td th:utext="${Error}"></td>
+  </div>
+  <div class = "row">
+    <form action="#" th:action="@{/registration}" th:object="${userForm}" method="post" id = "reg-form">
+      <div class = "row">
+        <div class = "col-sm">
+          <label>Адрес электронной почты</label>
+        </div>
+        <div class = "col-sm">
+          <input type="text" th:field="*{mail}" />
+        </div>
+      </div>
+      <div class = "row">
+        <div class = "col-sm">
+          <label>Имя пользователя</label>
+        </div>
+        <div class = "col-sm">
+          <input type="text" th:field="*{nickname}" />
+        </div>
+      </div>
+      <div class = "row">
+        <div class = "col-sm">
+          <label>Пароль: </label>
+        </div>
+        <div class = "col-sm">
+          <input th:field="*{password}" type = "password"/>
+        </div>
+      </div>
+      <div class = "row">
+        <div class = "col-sm">
+          <label>Подтвердите пароль: </label>
+        </div>
+        <div class = "col-sm">
+          <input th:field="*{passwordConfirm}" type = "password"/>
+        </div>
+      </div>
+      <div class = "row">
+        <p><input type="submit" value="Зарегистрироваться" id = "submit-button"/> <input type="reset" value="Сбросить" /></p>
+      </div>
+    </form>
+  </div>
+</div>
+</body>
+</html>

@@ -1,0 +1,30 @@
+version: "3.5"
+services:
+
+services:
+
+ db:
+  image: mysql:latest
+  container_name: mysql-tic-tac-toe-app
+  environment:
+   MYSQL_ROOT_PASSWORD: root
+   MYSQL_ROOT_HOST: '%'
+  ports:
+   - "3306:3306"
+  volumes:
+   - ./dbdata:/var/lib/mysql
+   - ./TicTacToeSQL.sql:/docker-entrypoint-initdb.d/TicTacToeSQL.sql
+  restart: always
+
+
+ phpmyadmin:
+  image: phpmyadmin/phpmyadmin:latest
+  container_name: my-php-myadmin-tic-tac-toe-app
+  ports:
+   - "80:80"
+  restart: always
+  depends_on:
+   - db
+  environment:
+   SPRING_DATASOURCE_USERNAME: root
+   SPRING_DATASOURCE_PASSWORD: root

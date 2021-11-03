@@ -1,0 +1,184 @@
+
+<html xmlns:th="http://www.thymeleaf.org" xmlns:sec="http://www.w3.org/1999/xhtml">
+<head>
+    <title>Главная</title>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+
+    <script src="https://code.jquery.com/jquery-3.6.0.js"
+            integrity="sha256-H+K7U5CnXl1h5ywQfKtSj8PCmoN9aaq30gDh27Xc0jk="
+            crossorigin="anonymous"></script>
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/uxl/popper.min.js" integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q" crossorigin="anonymous"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js" integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl" crossorigin="anonymous"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/sockjs-client/1.1.4/sockjs.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/stomp.js/2.3.3/stomp.min.js"></script>
+    <link th:href="@{/css/preloader.css}" rel="stylesheet" />
+    <link th:href="@{/css/header.css}" rel="stylesheet" />
+    <script type="text/javascript" th:src="@{/js/preloader.js}"> </script>
+
+    <script type="text/javascript" th:src="@{/js/main-page-chat.js}" > </script>
+    <link th:href="@{/css/mainpage.css}" rel="stylesheet" />
+</head>
+<body>
+
+<header th:fragment="header">
+<div id="preloader_container">
+    <div id="preloader"></div>
+</div>
+
+<nav class="navbar navbar-expand-md navbar-dark header" style="background-color: #22A7F0;">
+    <img th:src="@{/images/tictactoeimage.png}" width="30" height="30" class="d-inline-block align-top" alt="">
+    <a class="navbar-brand" href="#">TicTacToe</a>
+    <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+        <span class="navbar-toggler-icon"></span>
+    </button>
+    <div class="collapse navbar-collapse" id="navbarSupportedContent">
+        <ul class="navbar-nav mr-auto ">
+            <li class="nav-item">
+                <a class="nav-link" href="/">Главная</a>
+            </li>
+            <li class="nav-item" sec:authorize="!isAuthenticated()">
+                <a class="nav-link" th:href="@{/login}">Авторизоваться</a>
+            </li>
+            <li class="nav-item" sec:authorize="!isAuthenticated()">
+                <a class="nav-link" th:href="@{/registration}">Зарегистрироваться</a>
+            </li>
+            <li class="nav-item" sec:authorize="isAuthenticated()">
+                <a class="nav-link" th:href="@{/logout}">Выйти</a>
+            </li>
+        </ul>
+    </div>
+</nav>
+</header>
+
+<div class = "container">
+    <div class = "row">
+        <div class = "col-md-8 rate-table">
+            <div class = "row">
+                <div class = "col-md">
+                    <button type="button" onclick="window.location.href='/3x3-no-rank-finder'" class="btn btn-primary btn btn-block">Поиск игры 3x3</button>
+                </div>
+                <div class = "col-md">
+                    <button type="button" class="btn btn-primary btn btn-block">Поиск игры 15x15</button>
+                </div>
+            </div>
+            <div class = "row" style="padding-top: 4px;">
+                <div class = "col-md">
+                    <button type="button" class="btn btn-primary btn btn-block">Поиск игры 3x3 (рейтинг)</button>
+                </div>
+                <div class = "col-md">
+                    <button type="button" class="btn btn-primary btn btn-block">Поиск игры 15x15 (рейтинг)</button>
+                </div>
+            </div>
+            <div class = "col-md-12" style="padding-top: 4px;">
+                <ul class="nav nav-tabs nav-fill" id="myTab" role="tablist">
+                    <li class="nav-item" role="presentation">
+                        <a class="nav-link active" href="#3x3" id="3x3-tab" role="tab" data-bs-toggle="tab">Рейтинговая таблица 3x3</a>
+                    </li>
+                    <li class="nav-item" role="presentation">
+                        <a class="nav-link" id="15x15-tab" href="#15x15" role="tab" data-bs-toggle="tab">Рейтинговая таблица 15x15</a>
+                    </li>
+                </ul>
+                <div class="tab-content rank-table" id="myTabContent">
+                    <div class="tab-pane fade show active" id="3x3" role="tabpanel">
+                        <div class = "main-table-container">
+                            <table class="table table-fixed">
+                                <thead>
+                                <tr>
+                                    <th scope="col">#</th>
+                                    <th scope="col" style="text-align: center;">Имя пользователя</th>
+                                    <th scope="col" style="text-align: center;">Рейтинг</th>
+                                </tr>
+                                </thead>
+                                <tbody>
+                                <tr th:each="row,iterator : ${RankTable3x3}">
+                                    <th scope="row" sec:authorize="isAuthenticated()" th:if = "${currenUser.nickname} == ${row.nickname}" th:text="${iterator.index+1}" id = "3x3-pos-of"></th>
+                                    <th scope="row" sec:authorize="isAuthenticated()" th:unless = "${currenUser.nickname} == ${row.nickname}" th:text="${iterator.index+1}"></th>
+                                    <th scope="row" sec:authorize="!isAuthenticated()" th:text="${iterator.index+1}"></th>
+                                    <td th:text="${row.nickname}" style="text-align: center;"></td>
+                                    <td th:text="${row.score}" style="text-align: center;"></td>
+                                </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                        <div class="row" sec:authorize="isAuthenticated()">
+                            <div class = "col-md-12">
+                                <h5 class = "text-center">Ваша позиция в рейтинге: <label id = "3x3-position-bot"></label></h5>
+                            </div>
+                        </div>
+                        <div class="row" sec:authorize="isAuthenticated()">
+                            <div class = "col-md-12">
+                                <h5 class = "text-center">Ваши очки: <label th:text="${currenUser.rankScore3x3}"></label></h5>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="tab-pane fade" id="15x15" role="tabpanel">
+                        <div class = "main-table-container">
+                            <table class="table main-table">
+                                <thead>
+                                <tr>
+                                    <th scope="col">#</th>
+                                    <th scope="col" style="text-align: center;">Имя пользователя</th>
+                                    <th scope="col" style="text-align: center;">Рейтинг</th>
+                                </tr>
+                                </thead>
+                                <tbody>
+                                <tr th:each="row,iterator : ${RankTable15x15}">
+                                    <th scope="row" sec:authorize="isAuthenticated()" th:if = "${currenUser.nickname} == ${row.nickname}" th:text="${iterator.index+1}" id = "15x15-pos-of"></th>
+                                    <th scope="row" sec:authorize="isAuthenticated()" th:unless = "${currenUser.nickname} == ${row.nickname}" th:text="${iterator.index+1}"></th>
+                                    <th scope="row" sec:authorize="!isAuthenticated()" th:text="${iterator.index+1}"></th>
+                                    <td th:text="${row.nickname}" style="text-align: center;"></td>
+                                    <td th:text="${row.score}" style="text-align: center;"></td>
+                                </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                        <div class="row" sec:authorize="isAuthenticated()">
+                            <div class = "col-md-12">
+                                <h5 class = "text-center">Ваша позиция в рейтинге: <label id = "15x15-position-bot"></label></h5>
+                            </div>
+                        </div>
+                        <div class="row" sec:authorize="isAuthenticated()">
+                            <div class = "col-md-12">
+                                <h5 class = "text-center">Ваши очки: <label th:text="${currenUser.rankScore15x15}"></label></h5>
+                            </div>
+                        </div>
+                    </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class = "col-md-4 chat">
+                <div class = "col-md-12">
+                    <div class = "row">
+                        <p id = "errorMessage"></p>
+                    </div>
+                    <div class = "row border-bottom" id = "chat-window">
+                        <h4 style="text-align: center;">Список пользователей онлайн</h4>
+                        <div class = "col-md-12" id = "users-container"></div>
+                    </div>
+                    <div class = "row">
+                        <div class = "col-md-12" id = "messages-container"></div>
+                    </div>
+                    <div class = "row" sec:authorize="isAuthenticated()">
+                        <div class="col-md-12">
+                            <form id = "chat-message-sender">
+                                <div class="form-group">
+                                    <textarea style="min-width: 100%; resize: none; " type="chat-message" class="form-control" id="chat-input" aria-describedby="chat-message-helper" placeholder="Введите собщение" rows = 3></textarea>
+                                    <small id="chat-message-helper" class="form-text text-muted" style="color: red;"></small>
+                                </div>
+                                <input type="submit" class="btn btn-primary" value="Отправить">
+                            </form>
+                        </div>
+                    </div>
+                    <div class = "row" sec:authorize="!isAuthenticated()">
+                        <h4 class="text-center">Для использования чата - авторизуйтесь!</h4>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+</body>
+</html>

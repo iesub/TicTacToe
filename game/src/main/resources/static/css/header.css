@@ -1,0 +1,15 @@
+.header {
+    margin-bottom: 2%;
+}
+
+.navbar-dark .navbar-nav .nav-link {
+    color: white;
+}
+
+.navbar-brand{
+    color: aliceblue;
+}
+
+body{
+    background-color: #f9f9f9;
+}
