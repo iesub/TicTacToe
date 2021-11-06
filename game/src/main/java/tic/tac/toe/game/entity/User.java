@@ -46,6 +46,8 @@ public class User implements UserDetails {
     private Set<Role> roles;
     @OneToMany(mappedBy = "sender")
     private Set<ChatMessage> messagesSent;
+    @OneToMany(mappedBy = "gameWinner")
+    private Set<GameSession> wonSessions;
     @Column(name = "activated")
     boolean isActive = false;
 

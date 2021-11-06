@@ -3,34 +3,33 @@ package tic.tac.toe.game.controller;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.messaging.handler.annotation.MessageMapping;
 import org.springframework.messaging.handler.annotation.Payload;
-import org.springframework.messaging.handler.annotation.SendTo;
 import org.springframework.messaging.simp.SimpMessageHeaderAccessor;
 import org.springframework.messaging.simp.SimpMessagingTemplate;
 import org.springframework.security.core.context.SecurityContextImpl;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
-import tic.tac.toe.game.dto.WSChatMessage;
+import tic.tac.toe.game.entity.GameSession;
 import tic.tac.toe.game.entity.User;
-import tic.tac.toe.game.service.MessagingService;
+import tic.tac.toe.game.enumiration.GameTypesEnum;
 import tic.tac.toe.game.service.QueueService;
-import tic.tac.toe.game.service.UserService;
+import tic.tac.toe.game.service.GameSessionService;
 
-import javax.servlet.http.HttpSession;
-import java.util.ArrayList;
-import java.util.List;
 import java.util.Map;
+import java.util.Random;
+
+import static java.lang.String.valueOf;
 
 @Controller
 public class SessionFinderController {
     @Autowired
     QueueService queueService;
     @Autowired
+    GameSessionService sessionService;
+    @Autowired
     private SimpMessagingTemplate simpMessagingTemplate;
 
-    List<User> user3x3NoRankQueue = new ArrayList<>();
-
     @GetMapping("/3x3-no-rank-finder")
-    public String noRan3x3(HttpSession session){
+    public String noRan3x3(){
         return "3x3-no-rank-finder";
     }
 
@@ -47,8 +46,16 @@ public class SessionFinderController {
         }
         if (queueService.getQueue3x3NRank().size() > 1){
             User opponent = queueService.getQueue3x3NRank().get(0);
-            /* Тут получается генериться сессия и ссылку в сессию, пока заглушка с переходом в мейн*/
-            String sessionLink = "/";
+            Random random = new Random();
+            GameSession session;
+            if (random.nextBoolean()){
+                session = new GameSession(GameTypesEnum.NO_RANK_3x3, user, opponent);
+            } else {
+                session = new GameSession(GameTypesEnum.NO_RANK_3x3, opponent, user);
+            }
+            Long id = sessionService.saveSession(session);
+            String sessionId = valueOf(id);
+            String sessionLink = "/session/"+ sessionId;
             simpMessagingTemplate.convertAndSendToUser(securityContext.getAuthentication().getName()
                     , "/client/queue/no-rank-3x3-redirect", sessionLink);
             simpMessagingTemplate.convertAndSendToUser(opponent.getUsername()

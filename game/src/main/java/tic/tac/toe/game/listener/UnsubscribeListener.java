@@ -25,12 +25,15 @@ public class UnsubscribeListener implements ApplicationListener<SessionUnsubscri
         SecurityContextImpl spring_security_context = (SecurityContextImpl) sessionAtributes.get("SPRING_SECURITY_CONTEXT");
         Authentication authentication = spring_security_context.getAuthentication();
         User user = (User) authentication.getPrincipal();
-        if ((Integer)sessionAtributes.get("subscribedTo3x3NoRank") == 1){
+        if (sessionAtributes.get("subscribedTo3x3NoRank") != null &&
+                (Integer)sessionAtributes.get("subscribedTo3x3NoRank") == 1){
             queueService.deleteFrom3x3NoRank(user);
             sessionAtributes.remove("subscribedTo3x3NoRank");
-            System.out.println("Удален из 3x3 без ранга");
         }
-
+        if (sessionAtributes.get("subscribeToGame3x3NoRank") != null &&
+                (Integer)sessionAtributes.get("subscribeToGame3x3NoRank") == 1){
+            sessionAtributes.remove("subscribeToGame3x3NoRank");
+        }
         headers.setSessionAttributes(sessionAtributes);
     }
 }
