@@ -1,7 +1,7 @@
 
 <html xmlns:th="http://www.thymeleaf.org" xmlns:sec="http://www.w3.org/1999/xhtml">
 <head>
-    <title>Авторизация</title>
+    <title>Игра</title>
     <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
 
     <script src="https://code.jquery.com/jquery-3.6.0.js"
@@ -16,7 +16,41 @@
     <link th:href="@{/css/header.css}" rel="stylesheet" />
     <script type="text/javascript" th:src="@{/js/preloader.js}"> </script>
 
-    <script type="text/javascript" th:if = "${gameType.equals(gameType.NO_RANK_3x3)}" th:src="@{/js/no-rank-3x3-game.js}" > </script>
+    <script type="text/javascript" th:if = "${gameType == T(tic.tac.toe.game.enumiration.GameTypesEnum).NO_RANK_3x3}" th:src="@{/js/no-rank-3x3-game.js}" > </script>
+    <script type="text/javascript" th:if = "${gameType == T(tic.tac.toe.game.enumiration.GameTypesEnum).RANK_3x3}" th:src="@{/js/rank-3x3-game.js}" > </script>
+    <script type="text/javascript" th:if = "${gameType == T(tic.tac.toe.game.enumiration.GameTypesEnum).NO_RANK_15x15}" th:src="@{/js/no-rank-15x15-game.js}" > </script>
+    <script type="text/javascript" th:if = "${gameType == T(tic.tac.toe.game.enumiration.GameTypesEnum).RANK_15x15}" th:src="@{/js/rank-15x15-game.js}" > </script>
+
+    <script type="text/javascript" th:src="@{/js/3x3-game.js}"> </script>
+
+    <style>
+        .block-3x3, .disabled-block-3x3{
+            height: 100px;
+            width: 100px;
+        }
+
+        .block-15x15, .disabled-block-15x15{
+            height: 40px;
+            width: 40px;
+        }
+
+        .block-15x15:hover, .block-3x3:hover {
+            background-color: #f9f9f9;
+            cursor: pointer;
+        }
+
+        .table {
+            width: auto;
+            max-width: none;
+        }
+
+        .table-3x3{
+            margin-left: auto;
+            margin-right: auto;
+        }
+
+
+    </style>
 </head>
 <body>
 
@@ -24,31 +58,80 @@
 <div th:insert="~{index :: header}">
 </div>
 
+<img th:src="@{/images/circle.png}" class = "circle-image" style = "display: none;">
+<img th:src="@{/images/cross.png}" class = "cross-image" style = "display: none;">
+
+<!-- Modal -->
+<div class="modal fade" id="winning-modal" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered" role="document">
+        <div class="modal-content">
+            <div class="modal-header text-center">
+                <h2>Вы победили!</h2>
+            </div>
+            <div class="modal-body" id = "winning-modal-body">
+                <label>Вперед за новыми победами!</label>
+            </div>
+            <div class="modal-footer">
+                <button type="button" style="background-color: #22A7F0;" onclick="location.href='/'" class="btn btn-primary">На главную</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="modal fade" id="loosing-modal" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered" role="document">
+        <div class="modal-content">
+            <div class="modal-header text-center">
+                <h2>Вы проиграли!</h2>
+            </div>
+            <div class="modal-body" id = "loosing-modal-body">
+                <p>Вы же это так не оставите? Вперед в новую игру!</p>
+            </div>
+            <div class="modal-footer">
+                <button type="button" style="background-color: #22A7F0;"  onclick="location.href='/'" class="btn btn-primary">На главную</button>
+            </div>
+        </div>
+    </div>
+</div>
+
 <p id = "sessionId" style = "display: none" th:text="${sessionId}"></p>
 
-<div class = "container">
+<div class = "container" style = "background-color: white;">
     <div class = "row">
-        <div class = "col-sm">
-            <h1 th:if = "${gameType.equals(gameType.NO_RANK_3x3)}">Игра 3x3</h1>
-            <h1 th:if = "${gameType.equals(gameType.RANK_3x3)}">Ранговая игра 3x3</h1>
-            <h1 th:if = "${gameType.equals(gameType.NO_RANK_15x15)}">Игра 15x15</h1>
-            <h1 th:if = "${gameType.equals(gameType.RANK_15x15)}">Ранговая игра 3x3</h1>
+        <div class = "col-sm text-center">
+            <h1 th:if = "${gameType == T(tic.tac.toe.game.enumiration.GameTypesEnum).NO_RANK_3x3}">Игра 3x3</h1>
+            <h1 th:if = "${gameType == T(tic.tac.toe.game.enumiration.GameTypesEnum).RANK_3x3}">Ранговая игра 3x3</h1>
+            <h1 th:if = "${gameType == T(tic.tac.toe.game.enumiration.GameTypesEnum).NO_RANK_15x15}">Игра 15x15</h1>
+            <h1 th:if = "${gameType == T(tic.tac.toe.game.enumiration.GameTypesEnum).RANK_15x15}">Ранговая игра 3x3</h1>
         </div>
     </div>
     <div class = "row">
-        <div class = "col-sm-5 align-center">
+        <div class = "col-sm-5 text-center">
             <h2 th:text="${currentUser.getNickname()}"></h2>
             <h2 th:if = "${opponentCircle}">(крестики)</h2>
             <h2 th:if = "${opponentCross}">(нолики)</h2>
         </div>
-        <div class = "col-sm-2">
+        <div class = "col-sm-2 text-center">
             <h2>vs</h2>
         </div>
-        <div class = "col-sm-5">
+        <div class = "col-sm-5 text-center">
             <h2 th:if = "${opponentCircle}" th:text="${opponentCircle.getNickname()}"></h2>
             <h2 th:if = "${opponentCircle}">(нолики)</h2>
             <h2 th:if = "${opponentCross}" th:text="${opponentCross.getNickname()}"></h2>
             <h2 th:if = "${opponentCross}">(крестики)</h2>
+        </div>
+    </div>
+
+    <div class = "row justify-content-center">
+        <h3 id = "who-walk">  </h3>
+    </div>
+
+    <div class = "row justify-content-center">
+        <div class = "col-sm-12">
+            <table class="table table-bordered table-fixed table-3x3">
+                <tbody id = "table-container">
+                </tbody>
+            </table>
         </div>
     </div>
 </div>

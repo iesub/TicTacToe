@@ -58,6 +58,10 @@ public class UserService implements UserDetailsService {
         return userFromDb.orElse(new User());
     }
 
+    public void saveUser(User user){
+        userRepository.save(user);
+    }
+
     public void updateRow(User user){
         userRepository.save(user);
     }

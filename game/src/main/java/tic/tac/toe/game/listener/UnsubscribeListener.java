@@ -25,14 +25,21 @@ public class UnsubscribeListener implements ApplicationListener<SessionUnsubscri
         SecurityContextImpl spring_security_context = (SecurityContextImpl) sessionAtributes.get("SPRING_SECURITY_CONTEXT");
         Authentication authentication = spring_security_context.getAuthentication();
         User user = (User) authentication.getPrincipal();
-        if (sessionAtributes.get("subscribedTo3x3NoRank") != null &&
-                (Integer)sessionAtributes.get("subscribedTo3x3NoRank") == 1){
+        if (sessionAtributes.get("no-rank-queue-3x3") != null){
             queueService.deleteFrom3x3NoRank(user);
-            sessionAtributes.remove("subscribedTo3x3NoRank");
+            sessionAtributes.remove("no-rank-queue-3x3");
         }
-        if (sessionAtributes.get("subscribeToGame3x3NoRank") != null &&
-                (Integer)sessionAtributes.get("subscribeToGame3x3NoRank") == 1){
-            sessionAtributes.remove("subscribeToGame3x3NoRank");
+        if (sessionAtributes.get("rank-queue-3x3") != null){
+            queueService.deleteFrom3x3Rank(user);
+            sessionAtributes.remove("rank-queue-3x3");
+        }
+        if (sessionAtributes.get("no-rank-queue-15x15") != null){
+            queueService.deleteFrom15x15NoRank(user);
+            sessionAtributes.remove("no-rank-queue-15x15");
+        }
+        if (sessionAtributes.get("rank-queue-15x15") != null){
+            queueService.deleteFrom15x15Rank(user);
+            sessionAtributes.remove("rank-queue-15x15");
         }
         headers.setSessionAttributes(sessionAtributes);
     }

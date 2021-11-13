@@ -6,6 +6,9 @@ import tic.tac.toe.game.entity.GameSession;
 import tic.tac.toe.game.entity.User;
 import tic.tac.toe.game.repository.GameSessionRepository;
 
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.Map;
 import java.util.Optional;
 
 @Service
@@ -13,6 +16,22 @@ public class GameSessionService {
 
     @Autowired
     GameSessionRepository sessionRepository;
+
+    Map<Long, int[][]> sessionGame = new HashMap<>();
+
+    public void putGameMap(Long id, int[][] map){
+        sessionGame.put(id, map);
+    }
+
+    public void deleteMap(Long id){
+        sessionGame.remove(id);
+    }
+
+    public void putPoint(Long id, int y, int x){
+        if (sessionGame.get(id)[y][x] == 0) {
+            sessionGame.get(id)[y][x] = 1;
+        }
+    };
 
     public GameSession getSession(Long id){
         Optional<GameSession> gameSession = sessionRepository.findById(id);

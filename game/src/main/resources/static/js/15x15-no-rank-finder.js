@@ -1,0 +1,1 @@
+var finderType = "no-rank-queue-15x15"
