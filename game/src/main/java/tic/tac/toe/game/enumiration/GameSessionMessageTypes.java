@@ -7,5 +7,6 @@ public enum GameSessionMessageTypes {
     WINNING_MESSAGE,
     LOOSE_MESSAGE,
     CHECK_POSITION,
-    LOOSE_MESSAGE_D
+    LOOSE_MESSAGE_D,
+    GAME_FULL
 }

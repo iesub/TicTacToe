@@ -4,8 +4,8 @@ import lombok.Getter;
 import lombok.Setter;
 import tic.tac.toe.game.enumiration.WSChatMessageEnum;
 
-@Getter
 @Setter
+@Getter
 public class WSChatMessage {
     String senderNickname;
     String message;
@@ -21,4 +21,5 @@ public class WSChatMessage {
         this.senderNickname = senderNickname;
         this.message = message;
     }
+
 }

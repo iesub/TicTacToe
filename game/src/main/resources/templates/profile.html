@@ -1,0 +1,165 @@
+<html xmlns:th="http://www.thymeleaf.org" xmlns:sec="http://www.w3.org/1999/xhtml">
+<head>
+    <title>Авторизация</title>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+
+    <script src="https://code.jquery.com/jquery-3.6.0.js"
+            integrity="sha256-H+K7U5CnXl1h5ywQfKtSj8PCmoN9aaq30gDh27Xc0jk="
+            crossorigin="anonymous"></script>
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js" integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q" crossorigin="anonymous"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js" integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl" crossorigin="anonymous"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/sockjs-client/1.1.4/sockjs.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/stomp.js/2.3.3/stomp.min.js"></script>
+    <link th:href="@{/css/preloader.css}" rel="stylesheet" />
+    <link th:href="@{/css/header.css}" rel="stylesheet" />
+    <script type="text/javascript" th:src="@{/js/preloader.js}"> </script>
+
+    <style>
+        #game-history::-webkit-scrollbar-track
+        {
+            -webkit-box-shadow: inset 0 0 6px rgba(0,0,0,0.3);
+            border-radius: 12px;
+            background-color: #F5F5F5;
+        }
+
+        #game-history::-webkit-scrollbar
+        {
+            width: 6px;
+            background-color: #F5F5F5;
+        }
+
+        #game-history::-webkit-scrollbar-thumb
+        {
+            border-radius: 12px;
+            -webkit-box-shadow: inset 0 0 6px rgba(0,0,0,.3);
+            background-color: #22A7F0;
+        }
+    </style>
+
+</head>
+<body>
+
+
+<div th:insert="~{index :: header}">
+</div>
+
+<div class = "container" style="background-color: white; padding-top: 40px; border-radius: 15px; min-height: 90vh;">
+    <div class = "row">
+        <div class = "col-sm text-center">
+            <h2 th:text="${currenUser.getNickname()}"></h2>
+        </div>
+    </div>
+    <div class = "row">
+        <div class = "col-sm text-center">
+            <h3>Информация об игроке</h3>
+        </div>
+    </div>
+    <div class = "row">
+        <div class = "col-sm-6">
+            <div class = "row">
+                <div class="col-sm text-center">
+                    <h4> Игра 3x3 </h4>
+                </div>
+            </div>
+            <div class = "row">
+                <div class="col-sm text-center">
+                    <label> Побед: <label th:text="${currenUser.getGamesWonNoRank3x3()}"></label> </label>
+                </div>
+            </div>
+        </div>
+        <div class = "col-sm-6">
+            <div class = "row">
+                <div class="col-sm text-center">
+                    <h4> Игра 15x15 </h4>
+                </div>
+            </div>
+            <div class = "row">
+                <div class="col-sm text-center">
+                    <label> Побед: <label th:text="${currenUser.getGamesWonNoRank15x15()}"></label> </label>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class = "row text-center">
+        <div class = "col-sm-6">
+            <div class = "row">
+                <div class="col-sm text-center">
+                    <h4> Игра 3x3 ранговая</h4>
+                </div>
+            </div>
+            <div class = "row">
+                <div class="col-sm text-center">
+                    <label> Побед: <label th:text="${currenUser.getGamesWonRank3x3()}"></label> </label>
+                </div>
+            </div>
+            <div class = "row">
+                <div class="col-sm text-center">
+                    <label> Очков рейтинга: <label th:text="${currenUser.getRankScore3x3()}"></label> </label>
+                </div>
+            </div>
+        </div>
+        <div class = "col-sm-6">
+            <div class = "row">
+                <div class="col-sm text-center">
+                    <h4> Игра 15x15 ранговая</h4>
+                </div>
+            </div>
+            <div class = "row">
+                <div class="col-sm text-center">
+                    <label> Побед: <label th:text="${currenUser.getGamesWonRank15x15()}"></label> </label>
+                </div>
+            </div>
+            <div class = "row">
+                <div class="col-sm text-center">
+                    <label> Очков рейтинга: <label th:text="${currenUser.getRankScore15x15()}"></label> </label>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class = "row">
+        <div class = "col-sm text-center">
+            <h4> Последние игры </h4>
+        </div>
+    </div>
+
+    <div class = "row">
+        <div class = "col-sm-1"></div>
+        <div class = "col-sm-10" id = "game-history" style="overflow-y: auto; height: 50vh;">
+            <table class="table table-fixed">
+                <thead>
+                <tr>
+                    <th scope="col" style="text-align: center;">Тип игры</th>
+                    <th scope="col" style="text-align: center;">Ваша фигура</th>
+                    <th scope="col" style="text-align: center;"></th>
+                    <th scope="col" style="text-align: center;">Фигура соперника</th>
+                    <th scope="col" style="text-align: center;">Результат</th>
+                </tr>
+                </thead>
+                <tbody>
+                <tr th:each="row : ${sessionsHistory}">
+                    <td style="text-align: center;" th:if = "${row.getGameType() == T(tic.tac.toe.game.enumiration.GameTypesEnum).NO_RANK_3x3}"> <label>3x3</label></td>
+                    <td style="text-align: center;" th:if = "${row.getGameType() == T(tic.tac.toe.game.enumiration.GameTypesEnum).RANK_3x3}"> <label>3x3 Рейтинговая</label></td>
+                    <td style="text-align: center;" th:if = "${row.getGameType() == T(tic.tac.toe.game.enumiration.GameTypesEnum).NO_RANK_15x15}"> <label>15x15</label></td>
+                    <td style="text-align: center;" th:if = "${row.getGameType() == T(tic.tac.toe.game.enumiration.GameTypesEnum).RANK_15x15}"> <label>15x15 Рейтинговая</label></td>
+                    <td style="text-align: center;" th:if = "${row.getCircleSidePlayer().getId()} == ${currenUser.getId()}"> <label th:text="${currenUser.getNickname()}"></label> <label>(нолики)</label> </td>
+                    <td style="text-align: center;" th:unless = "${row.getCircleSidePlayer().getId()} == ${currenUser.getId()}"> <label th:text="${currenUser.getNickname()}"></label> <label>(крестики)</label> </td>
+                    <td style="text-align: center;"> vs </td>
+                    <td style="text-align: center;" th:if = "${row.getCircleSidePlayer().getId()} == ${currenUser.getId()}"> <label th:text="${row.getCrossSidePlayer().getNickname()}"></label> <label>(крестики)</label> </td>
+                    <td style="text-align: center;" th:unless = "${row.getCircleSidePlayer().getId()} == ${currenUser.getId()}"> <label th:text="${row.getCircleSidePlayer().getNickname()}"></label> <label>(нолики)</label> </td>
+                    <td style="text-align: center;" th:if = "${row.getGameWinner()} and ${row.getGameWinner().getId()} == ${currenUser.getId()}"> <label>Победа</label></td>
+                    <td style="text-align: center;" th:unless = "${row.getGameWinner()} and ${row.getGameWinner().getId()} == ${currenUser.getId()}"> <label>Поражение</label></td>
+                    <td style="text-align: center;" th:if = "${row.getGameWinner() == null}"> <label>Ничья</label></td>
+                </tr>
+                </tbody>
+            </table>
+        </div>
+        <div class = "col-sm-1"></div>
+    </div>
+
+</div>
+
+</body>
+</html>

@@ -28,18 +28,22 @@ public class UnsubscribeListener implements ApplicationListener<SessionUnsubscri
         if (sessionAtributes.get("no-rank-queue-3x3") != null){
             queueService.deleteFrom3x3NoRank(user);
             sessionAtributes.remove("no-rank-queue-3x3");
+            System.out.println(queueService.getQueue3x3NRank());
         }
         if (sessionAtributes.get("rank-queue-3x3") != null){
             queueService.deleteFrom3x3Rank(user);
             sessionAtributes.remove("rank-queue-3x3");
+            System.out.println(queueService.getQueue3x3Rank());
         }
         if (sessionAtributes.get("no-rank-queue-15x15") != null){
             queueService.deleteFrom15x15NoRank(user);
             sessionAtributes.remove("no-rank-queue-15x15");
+            System.out.println(queueService.getQueue15x15NRank());
         }
         if (sessionAtributes.get("rank-queue-15x15") != null){
             queueService.deleteFrom15x15Rank(user);
             sessionAtributes.remove("rank-queue-15x15");
+            System.out.println(queueService.getQueue15x15Rank());
         }
         headers.setSessionAttributes(sessionAtributes);
     }

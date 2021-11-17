@@ -9,9 +9,9 @@ import javax.persistence.*;
 import java.util.Collection;
 import java.util.Set;
 
-@Entity
-@Getter
 @Setter
+@Getter
+@Entity
 @Table(name = "user")
 public class User implements UserDetails {
     @Id
@@ -78,4 +78,11 @@ public class User implements UserDetails {
         return getRoles();
     }
 
+    public boolean isActive() {
+        return this.isActive;
+    }
+
+    public void setActive(boolean isActive) {
+        this.isActive = isActive;
+    }
 }

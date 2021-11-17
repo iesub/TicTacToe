@@ -3,6 +3,7 @@ var subscription
 var figureType
 var sessionid
 var yourMove = false
+var matchStoped = false
 
 $(document).ready(function () {
     var socket = new SockJS('/ws');
@@ -27,10 +28,23 @@ function onError(){}
 function onReply(payload){
     var answer = JSON.parse(payload.body);
     switch (answer.messageType){
+        case "GAME_FULL":
+            setTimeout(function()
+            {
+                $("#loosing-modal-body").text("Все поля заняты. Победивших нет!")
+                $("#loosing-modal").modal("toggle")
+            }, 1000);
+            matchStoped = true;
+            break;
         case "WINNING_MESSAGE":
-            $("#winning-modal").modal("toggle")
+            setTimeout(function()
+            {
+                $("#winning-modal").modal("toggle")
+            }, 1000);
+            matchStoped = true;
             break
         case "WINNING_MESSAGE_D":
+            if (matchStoped){break}
             $("#winning-modal-body").text("Ваш противник отключился. Но вы победили!")
             $("#winning-modal").modal("toggle")
             break
@@ -53,7 +67,13 @@ function onReply(payload){
             $("#loosing-modal-body").text("Вы отключились. Техническое поражение!")
             $("#loosing-modal").modal("toggle")
             break
-            break;
+        case "LOOSE_MESSAGE":
+            setTimeout(function()
+            {
+                $("#loosing-modal").modal("toggle")
+            }, 1000);
+            matchStoped = true;
+            break
     }
 }
 

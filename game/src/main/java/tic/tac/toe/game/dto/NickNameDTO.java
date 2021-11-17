@@ -4,8 +4,8 @@ import lombok.Getter;
 import lombok.Setter;
 import tic.tac.toe.game.enumiration.NickNameDTOTypes;
 
-@Getter
 @Setter
+@Getter
 public class NickNameDTO {
 
     String nickname;
@@ -21,4 +21,5 @@ public class NickNameDTO {
     public NickNameDTO(NickNameDTOTypes type){
         this.type = type;
     }
+
 }

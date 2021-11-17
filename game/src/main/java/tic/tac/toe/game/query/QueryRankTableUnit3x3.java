@@ -4,8 +4,8 @@ package tic.tac.toe.game.query;
 import lombok.Getter;
 import lombok.Setter;
 
-@Getter
 @Setter
+@Getter
 public class QueryRankTableUnit3x3 {
     Long id;
     String nickname;
@@ -17,4 +17,5 @@ public class QueryRankTableUnit3x3 {
         this.score = score;
         this.nickname = nickname;
     }
+
 }

@@ -6,9 +6,9 @@ import tic.tac.toe.game.enumiration.GameTypesEnum;
 
 import javax.persistence.*;
 
-@Entity
-@Getter
 @Setter
+@Getter
+@Entity
 @Table(name = "session")
 public class GameSession {
     @Id
@@ -34,4 +34,5 @@ public class GameSession {
         this.circleSidePlayer = circleSidePlayer;
         this.crossSidePlayer = crossSidePlayer;
     }
+
 }

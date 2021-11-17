@@ -4,8 +4,8 @@ import lombok.Getter;
 import lombok.Setter;
 import tic.tac.toe.game.enumiration.GameSessionMessageTypes;
 
-@Getter
 @Setter
+@Getter
 public class GameSessionMessageDTO {
     GameSessionMessageTypes messageType;
     String message;
@@ -15,4 +15,5 @@ public class GameSessionMessageDTO {
     public GameSessionMessageDTO(GameSessionMessageTypes type){
         this.messageType = type;
     }
+
 }

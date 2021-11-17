@@ -5,9 +5,9 @@ import lombok.Setter;
 
 import javax.persistence.*;
 
-@Entity
-@Getter
 @Setter
+@Getter
+@Entity
 @Table(name = "chat_message")
 public class ChatMessage {
     @Id
@@ -26,4 +26,5 @@ public class ChatMessage {
         this.message = message;
         this.sender = sender;
     }
+
 }

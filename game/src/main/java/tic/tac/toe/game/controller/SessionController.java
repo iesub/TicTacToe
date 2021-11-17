@@ -38,12 +38,14 @@ public class SessionController {
 
         GameSession session = sessionService.getSession(id);
 
+
         if (session.getGameWinner() != null){
             return "redirect:/";
         }
 
         SecurityContextImpl securityContext = (SecurityContextImpl) httpSession.getAttribute("SPRING_SECURITY_CONTEXT");
         User currentUser = (User) securityContext.getAuthentication().getPrincipal();
+        model.addAttribute("currenUser", currentUser);
         if (!session.getCrossSidePlayer().getId().equals(currentUser.getId()) &&
                 !session.getCircleSidePlayer().getId().equals(currentUser.getId())){
             return "redirect:/";
@@ -108,16 +110,91 @@ public class SessionController {
                 break;
             case CHECK_POSITION:
                 if (session.getGameWinner() != null) {return;}
+                int mapSize = 0;
+                boolean gameWinner = false;
                 String[] position = message.getMessage().split("-");
-                sessionService.putPoint(sessionId, Integer.parseInt(position[0]), Integer.parseInt(position[1]));
+                if (gameType.equals("no-rank-3x3")){mapSize = 3;}
+                if (gameType.equals("rank-3x3")){mapSize = 3;}
+                if (gameType.equals("no-rank-15x15")){mapSize = 15;}
+                if (gameType.equals("rank-15x15")){mapSize = 15;}
                 if (session.getCrossSidePlayer().getId().equals(user.getId())){
+                    sessionService.putPoint(sessionId, Integer.parseInt(position[0]), Integer.parseInt(position[1]), true);
                     simpMessagingTemplate.convertAndSendToUser(session.getCircleSidePlayer().getUsername(),
                             "/client/game/"+sessionId+"/"+gameType,
                             message);
+                    if (sessionService.mapIsFull(mapSize, sessionId)){
+                        simpMessagingTemplate.convertAndSend("/client/game/"+sessionId+"/"+gameType,
+                                new GameSessionMessageDTO(GameSessionMessageTypes.GAME_FULL));
+                        return;
+                    }
+                    if (sessionService.checkWinningCondition(sessionId, mapSize,1)){
+                        simpMessagingTemplate.convertAndSendToUser(session.getCrossSidePlayer().getUsername(),
+                                "/client/game/"+sessionId+"/"+gameType,
+                                new GameSessionMessageDTO(GameSessionMessageTypes.WINNING_MESSAGE));
+                        session.setGameWinner(session.getCrossSidePlayer());
+                        simpMessagingTemplate.convertAndSendToUser(session.getCircleSidePlayer().getUsername(),
+                                "/client/game/"+sessionId+"/"+gameType,
+                                new GameSessionMessageDTO(GameSessionMessageTypes.LOOSE_MESSAGE));
+                        gameWinner = true;
+                    }
                 } else {
+                    sessionService.putPoint(sessionId, Integer.parseInt(position[0]), Integer.parseInt(position[1]), false);
                     simpMessagingTemplate.convertAndSendToUser(session.getCrossSidePlayer().getUsername(),
                             "/client/game/"+sessionId+"/"+gameType,
                             message);
+                    if (sessionService.mapIsFull(mapSize, sessionId)){
+                        simpMessagingTemplate.convertAndSend("/client/game/"+sessionId+"/"+gameType,
+                                new GameSessionMessageDTO(GameSessionMessageTypes.GAME_FULL));
+                        return;
+                    }
+                    if (sessionService.checkWinningCondition(sessionId, mapSize,2)){
+                        simpMessagingTemplate.convertAndSendToUser(session.getCrossSidePlayer().getUsername(),
+                                "/client/game/"+sessionId+"/"+gameType,
+                                new GameSessionMessageDTO(GameSessionMessageTypes.LOOSE_MESSAGE));
+                        simpMessagingTemplate.convertAndSendToUser(session.getCircleSidePlayer().getUsername(),
+                                "/client/game/"+sessionId+"/"+gameType,
+                                new GameSessionMessageDTO(GameSessionMessageTypes.WINNING_MESSAGE));
+                        session.setGameWinner(session.getCircleSidePlayer());
+                        gameWinner = true;
+                    }
+                }
+                if (gameWinner){
+                    user = session.getGameWinner();
+                    User looser;
+                    if (session.getCrossSidePlayer().equals(user)){
+                        looser = session.getCircleSidePlayer();
+                    } else {
+                        looser = session.getCrossSidePlayer();
+                    }
+                    switch (session.getGameType()){
+                        case NO_RANK_3x3:
+                            user.setGamesWonNoRank3x3(user.getGamesWonNoRank3x3()+1);
+                            break;
+                        case RANK_3x3:
+                            user.setGamesWonRank3x3(user.getGamesWonRank3x3()+1);
+                            user.setRankScore3x3(user.getRankScore3x3()+25);
+                            if (looser.getRankScore3x3() >= 25){
+                                looser.setRankScore3x3(looser.getRankScore3x3()-25);
+                            } else if (looser.getRankScore3x3() > 0){
+                                looser.setRankScore3x3(0);
+                            }
+                            break;
+                        case NO_RANK_15x15:
+                            user.setGamesWonNoRank15x15(user.getGamesWonNoRank15x15()+1);
+                            break;
+                        case RANK_15x15:
+                            user.setGamesWonRank15x15(user.getGamesWonRank15x15()+1);
+                            user.setRankScore15x15(user.getRankScore15x15()+25);
+                            if (looser.getRankScore15x15() >= 25){
+                                looser.setRankScore15x15(looser.getRankScore15x15()-25);
+                            } else if (looser.getRankScore15x15() > 0){
+                                looser.setRankScore15x15(0);
+                            }
+                            break;
+                    }
+                    sessionService.saveSession(session);
+                    userService.saveUser(user);
+                    userService.saveUser(looser);
                 }
                 break;
         }
