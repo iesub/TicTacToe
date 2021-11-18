@@ -54,26 +54,26 @@
 </nav>
 </header>
 
-<div class = "container" style="background-color: white; padding-top: 40px; border-radius: 15px;">
+<div class = "container" style = "background-color: white; padding-top: 40px; border-radius: 15px; min-height: 85vh;">
     <div class = "row">
-        <div class = "col-md-8 rate-table">
+        <div class = "col-lg-8 rate-table">
             <div class = "row">
-                <div class = "col-md">
+                <div class = "col-lg">
                     <button type="button" onclick="window.location.href='/game-finder/3x3-nr'" class="btn btn-primary btn btn-block">Поиск игры 3x3</button>
                 </div>
-                <div class = "col-md">
+                <div class = "col-lg">
                     <button type="button" onclick="window.location.href='/game-finder/15x15-nr'" class="btn btn-primary btn btn-block">Поиск игры 15x15</button>
                 </div>
             </div>
             <div class = "row" style="padding-top: 4px;">
-                <div class = "col-md">
+                <div class = "col-lg">
                     <button type="button" onclick="window.location.href='/game-finder/3x3-r'" class="btn btn-primary btn btn-block">Поиск игры 3x3 (рейтинг)</button>
                 </div>
-                <div class = "col-md">
+                <div class = "col-lg">
                     <button type="button" onclick="window.location.href='/game-finder/15x15-r'" class="btn btn-primary btn btn-block">Поиск игры 15x15 (рейтинг)</button>
                 </div>
             </div>
-            <div class = "col-md-12" style="padding-top: 4px;">
+            <div class = "col-lg-12" style="padding-top: 4px;">
                 <ul class="nav nav-tabs nav-fill" id="myTab" role="tablist">
                     <li class="nav-item" role="presentation">
                         <a class="nav-link active" href="#3x3" id="3x3-tab" role="tab" data-bs-toggle="tab">Рейтинговая таблица 3x3</a>
@@ -105,12 +105,12 @@
                             </table>
                         </div>
                         <div class="row" sec:authorize="isAuthenticated()">
-                            <div class = "col-md-12">
+                            <div class = "col-lg-12">
                                 <h5 class = "text-center">Ваша позиция в рейтинге: <label id = "3x3-position-bot"></label></h5>
                             </div>
                         </div>
                         <div class="row" sec:authorize="isAuthenticated()">
-                            <div class = "col-md-12">
+                            <div class = "col-lg-12">
                                 <h5 class = "text-center">Ваши очки: <label th:text="${currenUser.rankScore3x3}"></label></h5>
                             </div>
                         </div>
@@ -137,12 +137,12 @@
                             </table>
                         </div>
                         <div class="row" sec:authorize="isAuthenticated()">
-                            <div class = "col-md-12">
+                            <div class = "col-lg-12">
                                 <h5 class = "text-center">Ваша позиция в рейтинге: <label id = "15x15-position-bot"></label></h5>
                             </div>
                         </div>
                         <div class="row" sec:authorize="isAuthenticated()">
-                            <div class = "col-md-12">
+                            <div class = "col-lg-12">
                                 <h5 class = "text-center">Ваши очки: <label th:text="${currenUser.rankScore15x15}"></label></h5>
                             </div>
                         </div>
@@ -151,20 +151,20 @@
                 </div>
             </div>
 
-            <div class = "col-md-4 chat">
-                <div class = "col-md-12">
+            <div class = "col-lg-4 chat">
+                <div class = "col-lg-12">
                     <div class = "row">
                         <p id = "errorMessage"></p>
                     </div>
                     <div class = "row border-bottom" id = "chat-window">
                         <h4 style="text-align: center;">Список пользователей онлайн</h4>
-                        <div class = "col-md-12" id = "users-container"></div>
+                        <div class = "col-lg-12" id = "users-container"></div>
                     </div>
                     <div class = "row">
-                        <div class = "col-md-12" id = "messages-container"></div>
+                        <div class = "col-lg-12" id = "messages-container"></div>
                     </div>
                     <div class = "row" sec:authorize="isAuthenticated()">
-                        <div class="col-md-12">
+                        <div class="col-lg-12">
                             <form id = "chat-message-sender">
                                 <div class="form-group">
                                     <textarea style="min-width: 100%; resize: none; " type="chat-message" class="form-control" id="chat-input" aria-describedby="chat-message-helper" placeholder="Введите собщение" rows = 3></textarea>

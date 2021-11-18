@@ -96,9 +96,9 @@
 
 <p id = "sessionId" style = "display: none" th:text="${sessionId}"></p>
 
-<div class = "container" style = "background-color: white; padding-top: 40px; border-radius: 15px; min-height: 90vh;">
+<div class = "container" style = "background-color: white; padding-top: 40px; border-radius: 15px; min-height: 85vh;">
     <div class = "row">
-        <div class = "col-sm text-center">
+        <div class = "col-lg text-center">
             <h1 th:if = "${gameType == T(tic.tac.toe.game.enumiration.GameTypesEnum).NO_RANK_3x3}">Игра 3x3</h1>
             <h1 th:if = "${gameType == T(tic.tac.toe.game.enumiration.GameTypesEnum).RANK_3x3}">Ранговая игра 3x3</h1>
             <h1 th:if = "${gameType == T(tic.tac.toe.game.enumiration.GameTypesEnum).NO_RANK_15x15}">Игра 15x15</h1>
@@ -106,15 +106,15 @@
         </div>
     </div>
     <div class = "row">
-        <div class = "col-sm-5 text-center">
+        <div class = "col-lg-5 text-center">
             <h2 th:text="${currentUser.getNickname()}"></h2>
             <h2 th:if = "${opponentCircle}">(крестики)</h2>
             <h2 th:if = "${opponentCross}">(нолики)</h2>
         </div>
-        <div class = "col-sm-2 text-center">
+        <div class = "col-lg-2 text-center">
             <h2>vs</h2>
         </div>
-        <div class = "col-sm-5 text-center">
+        <div class = "col-lg-5 text-center">
             <h2 th:if = "${opponentCircle}" th:text="${opponentCircle.getNickname()}"></h2>
             <h2 th:if = "${opponentCircle}">(нолики)</h2>
             <h2 th:if = "${opponentCross}" th:text="${opponentCross.getNickname()}"></h2>
@@ -127,7 +127,7 @@
     </div>
 
     <div class = "row justify-content-center">
-        <div class = "col-sm-12">
+        <div class = "col-lg-12">
             <table class="table table-bordered table-fixed table-3x3">
                 <tbody id = "table-container">
                 </tbody>
