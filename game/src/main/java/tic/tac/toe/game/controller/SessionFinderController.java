@@ -10,16 +10,15 @@ import org.springframework.security.core.context.SecurityContextImpl;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
-import tic.tac.toe.game.entity.GameSession;
-import tic.tac.toe.game.entity.User;
-import tic.tac.toe.game.enumiration.GameTypesEnum;
-import tic.tac.toe.game.service.QueueService;
-import tic.tac.toe.game.service.GameSessionService;
+import tic.tac.toe.game.model.entity.GameSession;
+import tic.tac.toe.game.model.entity.User;
+import tic.tac.toe.game.model.enumiration.GameTypesEnum;
+import tic.tac.toe.game.model.service.QueueService;
+import tic.tac.toe.game.model.service.GameSessionService;
 
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
-import java.util.Random;
 
 import static java.lang.String.valueOf;
 
@@ -57,7 +56,7 @@ public class SessionFinderController {
     }
 
     @MessageMapping("/{finderType}.add-to-queue")
-    public void subscribeOnQueue3x3(SimpMessageHeaderAccessor headerAccessor,
+    public void subscribeOnQueue(SimpMessageHeaderAccessor headerAccessor,
                                     @Payload int message, @DestinationVariable("finderType") String finderType){
         Map<String, Object> attrs = headerAccessor.getSessionAttributes();
         SecurityContextImpl securityContext = (SecurityContextImpl) attrs.get("SPRING_SECURITY_CONTEXT");

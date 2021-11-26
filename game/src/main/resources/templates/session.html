@@ -16,10 +16,10 @@
     <link th:href="@{/css/header.css}" rel="stylesheet" />
     <script type="text/javascript" th:src="@{/js/preloader.js}"> </script>
 
-    <script type="text/javascript" th:if = "${gameType == T(tic.tac.toe.game.enumiration.GameTypesEnum).NO_RANK_3x3}" th:src="@{/js/no-rank-3x3-game.js}" > </script>
-    <script type="text/javascript" th:if = "${gameType == T(tic.tac.toe.game.enumiration.GameTypesEnum).RANK_3x3}" th:src="@{/js/rank-3x3-game.js}" > </script>
-    <script type="text/javascript" th:if = "${gameType == T(tic.tac.toe.game.enumiration.GameTypesEnum).NO_RANK_15x15}" th:src="@{/js/no-rank-15x15-game.js}" > </script>
-    <script type="text/javascript" th:if = "${gameType == T(tic.tac.toe.game.enumiration.GameTypesEnum).RANK_15x15}" th:src="@{/js/rank-15x15-game.js}" > </script>
+    <script type="text/javascript" th:if = "${gameType == T(tic.tac.toe.game.model.enumiration.GameTypesEnum).NO_RANK_3x3}" th:src="@{/js/no-rank-3x3-game.js}" > </script>
+    <script type="text/javascript" th:if = "${gameType == T(tic.tac.toe.game.model.enumiration.GameTypesEnum).RANK_3x3}" th:src="@{/js/rank-3x3-game.js}" > </script>
+    <script type="text/javascript" th:if = "${gameType == T(tic.tac.toe.game.model.enumiration.GameTypesEnum).NO_RANK_15x15}" th:src="@{/js/no-rank-15x15-game.js}" > </script>
+    <script type="text/javascript" th:if = "${gameType == T(tic.tac.toe.game.model.enumiration.GameTypesEnum).RANK_15x15}" th:src="@{/js/rank-15x15-game.js}" > </script>
 
     <script type="text/javascript" th:src="@{/js/3x3-game.js}"> </script>
 
@@ -99,10 +99,10 @@
 <div class = "container" style = "background-color: white; padding-top: 40px; border-radius: 15px; min-height: 85vh;">
     <div class = "row">
         <div class = "col-lg text-center">
-            <h1 th:if = "${gameType == T(tic.tac.toe.game.enumiration.GameTypesEnum).NO_RANK_3x3}">Игра 3x3</h1>
-            <h1 th:if = "${gameType == T(tic.tac.toe.game.enumiration.GameTypesEnum).RANK_3x3}">Ранговая игра 3x3</h1>
-            <h1 th:if = "${gameType == T(tic.tac.toe.game.enumiration.GameTypesEnum).NO_RANK_15x15}">Игра 15x15</h1>
-            <h1 th:if = "${gameType == T(tic.tac.toe.game.enumiration.GameTypesEnum).RANK_15x15}">Ранговая игра 3x3</h1>
+            <h1 th:if = "${gameType == T(tic.tac.toe.game.model.enumiration.GameTypesEnum).NO_RANK_3x3}">Игра 3x3</h1>
+            <h1 th:if = "${gameType == T(tic.tac.toe.game.model.enumiration.GameTypesEnum).RANK_3x3}">Ранговая игра 3x3</h1>
+            <h1 th:if = "${gameType == T(tic.tac.toe.game.model.enumiration.GameTypesEnum).NO_RANK_15x15}">Игра 15x15</h1>
+            <h1 th:if = "${gameType == T(tic.tac.toe.game.model.enumiration.GameTypesEnum).RANK_15x15}">Ранговая игра 3x3</h1>
         </div>
     </div>
     <div class = "row">

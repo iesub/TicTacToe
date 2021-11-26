@@ -5,9 +5,9 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
-import tic.tac.toe.game.entity.User;
-import tic.tac.toe.game.service.MailService;
-import tic.tac.toe.game.service.UserService;
+import tic.tac.toe.game.model.entity.User;
+import tic.tac.toe.game.MailService;
+import tic.tac.toe.game.model.service.UserService;
 
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
@@ -70,7 +70,7 @@ public class AuthorizationController {
         return "registration-mail-notification";
     }
 
-    @GetMapping("registration/activate/{userId}")
+    @GetMapping("/registration/activate/{userId}")
     public String activation(@PathVariable("userId") Long userId) {
         User user = userService.findUserById(userId);
         user.setActive(true);

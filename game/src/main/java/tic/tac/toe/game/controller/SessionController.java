@@ -11,13 +11,13 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
-import tic.tac.toe.game.dto.GameSessionMessageDTO;
-import tic.tac.toe.game.entity.GameSession;
-import tic.tac.toe.game.entity.User;
-import tic.tac.toe.game.enumiration.GameSessionMessageTypes;
-import tic.tac.toe.game.service.QueueService;
-import tic.tac.toe.game.service.GameSessionService;
-import tic.tac.toe.game.service.UserService;
+import tic.tac.toe.game.controller.dto.GameSessionMessageDTO;
+import tic.tac.toe.game.model.entity.GameSession;
+import tic.tac.toe.game.model.entity.User;
+import tic.tac.toe.game.controller.enumiration.GameSessionMessageTypes;
+import tic.tac.toe.game.model.service.QueueService;
+import tic.tac.toe.game.model.service.GameSessionService;
+import tic.tac.toe.game.model.service.UserService;
 
 import javax.servlet.http.HttpSession;
 import java.util.Map;
@@ -62,7 +62,7 @@ public class SessionController {
     }
 
     @MessageMapping("/game/{sessionId}/{gameType}.message")
-    public void workWith3x3NoRank(SimpMessageHeaderAccessor headerAccessor,
+    public void workWithGame(SimpMessageHeaderAccessor headerAccessor,
                                   @Payload GameSessionMessageDTO message, @DestinationVariable("sessionId") Long sessionId,
                                   @DestinationVariable("gameType") String gameType){
         GameSession session = sessionService.getSession(sessionId);
@@ -122,11 +122,6 @@ public class SessionController {
                     simpMessagingTemplate.convertAndSendToUser(session.getCircleSidePlayer().getUsername(),
                             "/client/game/"+sessionId+"/"+gameType,
                             message);
-                    if (sessionService.mapIsFull(mapSize, sessionId)){
-                        simpMessagingTemplate.convertAndSend("/client/game/"+sessionId+"/"+gameType,
-                                new GameSessionMessageDTO(GameSessionMessageTypes.GAME_FULL));
-                        return;
-                    }
                     if (sessionService.checkWinningCondition(sessionId, mapSize,1)){
                         simpMessagingTemplate.convertAndSendToUser(session.getCrossSidePlayer().getUsername(),
                                 "/client/game/"+sessionId+"/"+gameType,
@@ -137,16 +132,16 @@ public class SessionController {
                                 new GameSessionMessageDTO(GameSessionMessageTypes.LOOSE_MESSAGE));
                         gameWinner = true;
                     }
+                    if (sessionService.mapIsFull(mapSize, sessionId) && !gameWinner){
+                        simpMessagingTemplate.convertAndSend("/client/game/"+sessionId+"/"+gameType,
+                                new GameSessionMessageDTO(GameSessionMessageTypes.GAME_FULL));
+                        return;
+                    }
                 } else {
                     sessionService.putPoint(sessionId, Integer.parseInt(position[0]), Integer.parseInt(position[1]), false);
                     simpMessagingTemplate.convertAndSendToUser(session.getCrossSidePlayer().getUsername(),
                             "/client/game/"+sessionId+"/"+gameType,
                             message);
-                    if (sessionService.mapIsFull(mapSize, sessionId)){
-                        simpMessagingTemplate.convertAndSend("/client/game/"+sessionId+"/"+gameType,
-                                new GameSessionMessageDTO(GameSessionMessageTypes.GAME_FULL));
-                        return;
-                    }
                     if (sessionService.checkWinningCondition(sessionId, mapSize,2)){
                         simpMessagingTemplate.convertAndSendToUser(session.getCrossSidePlayer().getUsername(),
                                 "/client/game/"+sessionId+"/"+gameType,
@@ -156,6 +151,11 @@ public class SessionController {
                                 new GameSessionMessageDTO(GameSessionMessageTypes.WINNING_MESSAGE));
                         session.setGameWinner(session.getCircleSidePlayer());
                         gameWinner = true;
+                    }
+                    if (sessionService.mapIsFull(mapSize, sessionId) && !gameWinner){
+                        simpMessagingTemplate.convertAndSend("/client/game/"+sessionId+"/"+gameType,
+                                new GameSessionMessageDTO(GameSessionMessageTypes.GAME_FULL));
+                        return;
                     }
                 }
                 if (gameWinner){

@@ -12,10 +12,10 @@
   <script src="https://cdnjs.cloudflare.com/ajax/libs/sockjs-client/1.1.4/sockjs.min.js"></script>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/stomp.js/2.3.3/stomp.min.js"></script>
 
-  <script type="text/javascript" th:if = "${finderType == T(tic.tac.toe.game.enumiration.GameTypesEnum).NO_RANK_3x3}" th:src="@{/js/3x3-no-rank-finder.js}" > </script>
-  <script type="text/javascript" th:if = "${finderType == T(tic.tac.toe.game.enumiration.GameTypesEnum).RANK_3x3}" th:src="@{/js/3x3-rank-finder.js}" > </script>
-  <script type="text/javascript" th:if = "${finderType == T(tic.tac.toe.game.enumiration.GameTypesEnum).NO_RANK_15x15}" th:src="@{/js/15x15-no-rank-finder.js}" > </script>
-  <script type="text/javascript" th:if = "${finderType == T(tic.tac.toe.game.enumiration.GameTypesEnum).RANK_15x15}" th:src="@{/js/15x15-rank-finder.js}" > </script>
+  <script type="text/javascript" th:if = "${finderType == T(tic.tac.toe.game.model.enumiration.GameTypesEnum).NO_RANK_3x3}" th:src="@{/js/3x3-no-rank-finder.js}" > </script>
+  <script type="text/javascript" th:if = "${finderType == T(tic.tac.toe.game.model.enumiration.GameTypesEnum).RANK_3x3}" th:src="@{/js/3x3-rank-finder.js}" > </script>
+  <script type="text/javascript" th:if = "${finderType == T(tic.tac.toe.game.model.enumiration.GameTypesEnum).NO_RANK_15x15}" th:src="@{/js/15x15-no-rank-finder.js}" > </script>
+  <script type="text/javascript" th:if = "${finderType == T(tic.tac.toe.game.model.enumiration.GameTypesEnum).RANK_15x15}" th:src="@{/js/15x15-rank-finder.js}" > </script>
 
   <link th:href="@{/css/queue-waiter.css}" rel="stylesheet" />
   <script type="text/javascript" th:src="@{/js/game-finder.js}"> </script>

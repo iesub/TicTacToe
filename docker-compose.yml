@@ -1,5 +1,4 @@
 version: "3.5"
-services:
 
 services:
 
@@ -26,5 +25,21 @@ services:
   depends_on:
    - db
   environment:
+   SPRING_DATASOURCE_USERNAME: root
+   SPRING_DATASOURCE_PASSWORD: root
+
+ tictactoeapp:
+  image: tictactoe-app
+  container_name: tictactoe-app-container
+  build:
+   context: game\
+   dockerfile: Dockerfile
+  ports:
+   - "13378:13378"
+  restart: always
+  depends_on:
+   - db
+  environment:
+   SPRING_DATASOURCE_URL: jdbc:mysql://mysql-tic-tac-toe-app:3306/tictactoe?useUnicode=true&characterEncoding=utf8
    SPRING_DATASOURCE_USERNAME: root
    SPRING_DATASOURCE_PASSWORD: root
