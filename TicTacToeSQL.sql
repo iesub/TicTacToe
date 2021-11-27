@@ -91,7 +91,7 @@ ENGINE = InnoDB;
 CREATE TABLE IF NOT EXISTS `tictactoe`.`session` (
   `id` INT NOT NULL,
   `session_game_type` VARCHAR(45) NULL,
-  `game_winner_id` INT NOT NULL,
+  `game_winner_id` INT NULL,
   `circle_side_player_id` INT NOT NULL,
   `cross_side_player_id` INT NOT NULL,
   PRIMARY KEY (`id`),
