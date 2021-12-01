@@ -18,6 +18,8 @@ import tic.tac.toe.game.model.entity.ChatMessage;
 import tic.tac.toe.game.model.entity.User;
 import tic.tac.toe.game.controller.enumiration.NickNameDTOTypes;
 import tic.tac.toe.game.controller.enumiration.WSChatMessageEnum;
+import tic.tac.toe.game.model.query.QueryRankTableUnit15x15;
+import tic.tac.toe.game.model.query.QueryRankTableUnit3x3;
 import tic.tac.toe.game.model.service.MessagingService;
 import tic.tac.toe.game.model.service.UserService;
 
@@ -36,8 +38,12 @@ public class MainPageController {
 
     @GetMapping("/")
     public String handleMainPage(Model model, HttpSession session){
-        model.addAttribute("RankTable3x3", userService.get3x3RankList());
-        model.addAttribute("RankTable15x15", userService.get15x15RankList());
+        List<QueryRankTableUnit3x3> rankTableUnit3x3 = userService.get3x3RankList();
+        rankTableUnit3x3.remove(0);
+        List<QueryRankTableUnit15x15> rankTableUnit15x15 = userService.get15x15RankList();
+        rankTableUnit15x15.remove(0);
+        model.addAttribute("RankTable3x3", rankTableUnit3x3);
+        model.addAttribute("RankTable15x15", rankTableUnit15x15);
 
         SecurityContextImpl securityContext = (SecurityContextImpl) session.getAttribute("SPRING_SECURITY_CONTEXT");
         if (securityContext == null) {return "index";}

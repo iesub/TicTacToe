@@ -122,3 +122,4 @@ SET UNIQUE_CHECKS=@OLD_UNIQUE_CHECKS;
 
 use tictactoe;
 insert into user_role values(1, "ROLE_USER");
+insert into user values(0, "-", "-", "-", 1, 0, 0, 0, 0, 0, 0);

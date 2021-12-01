@@ -150,8 +150,8 @@
                     <td style="text-align: center;" th:if = "${row.getCircleSidePlayer().getId()} == ${currenUser.getId()}"> <label th:text="${row.getCrossSidePlayer().getNickname()}"></label> <label>(крестики)</label> </td>
                     <td style="text-align: center;" th:unless = "${row.getCircleSidePlayer().getId()} == ${currenUser.getId()}"> <label th:text="${row.getCircleSidePlayer().getNickname()}"></label> <label>(нолики)</label> </td>
                     <td style="text-align: center;" th:if = "${row.getGameWinner()} and ${row.getGameWinner().getId()} == ${currenUser.getId()}"> <label>Победа</label></td>
-                    <td style="text-align: center;" th:if = "${row.getGameWinner()} and ${row.getGameWinner().getId()} != ${currenUser.getId()}"> <label>Поражение</label></td>
-                    <td style="text-align: center;" th:if = "${row.getGameWinner() == null}"> <label>Ничья</label></td>
+                    <td style="text-align: center;" th:if = "${row.getGameWinner()} and ${row.getGameWinner().getId()} != ${currenUser.getId()} and ${row.getGameWinner().getId != 1}"> <label>Поражение</label></td>
+                    <td style="text-align: center;" th:if = "${row.getGameWinner().getId == 1}"> <label>Ничья</label></td>
                 </tr>
                 </tbody>
             </table>

@@ -135,6 +135,9 @@ public class SessionController {
                     if (sessionService.mapIsFull(mapSize, sessionId) && !gameWinner){
                         simpMessagingTemplate.convertAndSend("/client/game/"+sessionId+"/"+gameType,
                                 new GameSessionMessageDTO(GameSessionMessageTypes.GAME_FULL));
+                        User userDraw = userService.findUserById(1L);
+                        session.setGameWinner(userDraw);
+                        sessionService.saveSession(session);
                         return;
                     }
                 } else {
@@ -155,6 +158,9 @@ public class SessionController {
                     if (sessionService.mapIsFull(mapSize, sessionId) && !gameWinner){
                         simpMessagingTemplate.convertAndSend("/client/game/"+sessionId+"/"+gameType,
                                 new GameSessionMessageDTO(GameSessionMessageTypes.GAME_FULL));
+                        User userDraw = userService.findUserById(1L);
+                        session.setGameWinner(userDraw);
+                        sessionService.saveSession(session);
                         return;
                     }
                 }
